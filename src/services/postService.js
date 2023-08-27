@@ -49,8 +49,28 @@ const getPostById = async (id) => {
     return post;
 };
 
+const updatePostById = async (id, userId, { title, content }) => {
+    const post = await BlogPost.findByPk(id);
+
+    if (post.userId !== userId) {
+        throw new Error('Unauthorized');
+    }
+
+    await BlogPost.update(
+        {
+            title,
+            content,
+            updated: new Date(),
+        },
+        { where: { id } },
+    );
+
+    return getPostById(id);
+};
+
 module.exports = {
     createPost,
     getAllPosts,
     getPostById,
+    updatePostById,
 };
