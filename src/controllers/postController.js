@@ -79,10 +79,23 @@ const deletePostById = async (req, res) => {
     }
 };
 
+const searchPosts = async (req, res) => {
+    try {
+        const { q } = req.query;
+
+        const posts = await postService.searchPosts(q || '');
+
+        return res.status(200).json(posts);
+    } catch (error) {
+        return res.status(500).json({ message: INTERNAL_SV_ERROR });
+    }
+};
+
 module.exports = {
     createPost,
     getAllPosts,
     getPostById,
     updatePostById,
     deletePostById,
+    searchPosts,
 };
