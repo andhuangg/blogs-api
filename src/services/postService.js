@@ -68,9 +68,25 @@ const updatePostById = async (id, userId, { title, content }) => {
     return getPostById(id);
 };
 
+const deletePostById = async (id, userId) => {
+    const post = await BlogPost.findByPk(id);
+
+    if (!post) {
+        throw new Error('PostNotFound');
+    }
+
+    if (post.userId !== userId) {
+        throw new Error('Unauthorized');
+    }
+
+    await PostCategory.destroy({ where: { postId: id } });
+    await BlogPost.destroy({ where: { id } });
+};
+
 module.exports = {
     createPost,
     getAllPosts,
     getPostById,
     updatePostById,
+    deletePostById,
 };
