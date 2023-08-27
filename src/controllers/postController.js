@@ -1,5 +1,7 @@
 const { postService } = require('../services');
 
+const INTERNAL_SV_ERROR = { message: 'Internal server error' };
+
 const createPost = async (req, res) => {
     try {
         const { title, content, categoryIds } = req.body;
@@ -9,7 +11,7 @@ const createPost = async (req, res) => {
 
         return res.status(201).json(newPost);
     } catch (error) {
-        return res.status(500).json({ message: 'Internal server error', error: error.message });
+        return res.status(500).json({ message: INTERNAL_SV_ERROR });
     }
 };
 
@@ -18,7 +20,7 @@ const getAllPosts = async (req, res) => {
         const posts = await postService.getAllPosts();
         return res.status(200).json(posts);
     } catch (error) {
-        return res.status(500).json({ message: 'Internal server error' });
+        return res.status(500).json({ message: INTERNAL_SV_ERROR });
     }
 };
 
@@ -34,7 +36,7 @@ const getPostById = async (req, res) => {
 
         return res.status(200).json(post);
     } catch (error) {
-        return res.status(500).json({ message: 'Internal server error', error: error.message });
+        return res.status(500).json({ message: INTERNAL_SV_ERROR });
     }
 };
 
@@ -55,7 +57,7 @@ const updatePostById = async (req, res) => {
         if (error.message === 'Unauthorized') {
             return res.status(401).json({ message: 'Unauthorized user' });
         }
-        return res.status(500).json({ message: 'Internal server error' });
+        return res.status(500).json({ message: INTERNAL_SV_ERROR });
     }
 };
 
@@ -73,7 +75,7 @@ const deletePostById = async (req, res) => {
         } if (error.message === 'PostNotFound') {
             return res.status(404).json({ message: 'Post does not exist' });
         }
-        return res.status(500).json({ message: 'Internal server error' });
+        return res.status(500).json({ message: INTERNAL_SV_ERROR });
     }
 };
 
