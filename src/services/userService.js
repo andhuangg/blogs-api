@@ -60,9 +60,20 @@ const getUserById = async (id) => {
     return user;
 };
 
+const deleteUserById = async (id) => {
+    const user = await User.findOne({ where: { id } });
+
+    if (!user) {
+        throw new Error('User does not exist');
+    }
+
+    await User.destroy({ where: { id } });
+};
+
 module.exports = {
     login,
     createUser,
     getAllUsers,
     getUserById,
+    deleteUserById,
 };
